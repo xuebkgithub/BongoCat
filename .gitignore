@@ -21,3 +21,7 @@ target
 *.njsproj
 *.sln
 *.sw?
+/*/CLAUDE.md
+/CLAUDE.md
+/.claude/
+/.vscode/

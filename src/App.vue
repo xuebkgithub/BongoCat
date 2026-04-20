@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { emit } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { error } from '@tauri-apps/plugin-log'
 import { openUrl } from '@tauri-apps/plugin-opener'
@@ -13,12 +14,13 @@ import { RouterView } from 'vue-router'
 import { useTauriListen } from './composables/useTauriListen'
 import { useThemeVars } from './composables/useThemeVars'
 import { useWindowState } from './composables/useWindowState'
-import { LANGUAGE, LISTEN_KEY } from './constants'
+import { LANGUAGE, LISTEN_KEY, WINDOW_LABEL } from './constants'
 import { getAntdLocale } from './locales/index.ts'
 import { hideWindow, showWindow } from './plugins/window'
 import { useAppStore } from './stores/app'
 import { useCatStore } from './stores/cat'
 import { useGeneralStore } from './stores/general'
+import { useLabelStore } from './stores/label'
 import { useModelStore } from './stores/model'
 import { useShortcutStore } from './stores/shortcut.ts'
 
@@ -26,6 +28,7 @@ const { generateColorVars } = useThemeVars()
 const appStore = useAppStore()
 const modelStore = useModelStore()
 const catStore = useCatStore()
+const labelStore = useLabelStore()
 const generalStore = useGeneralStore()
 const shortcutStore = useShortcutStore()
 const appWindow = getCurrentWebviewWindow()
@@ -42,6 +45,7 @@ onMounted(async () => {
   await modelStore.init()
   await catStore.$tauri.start()
   catStore.init()
+  await labelStore.$tauri.start()
   await generalStore.$tauri.start()
   await generalStore.init()
   await shortcutStore.$tauri.start()
@@ -50,6 +54,18 @@ onMounted(async () => {
 
 watch(() => generalStore.appearance.language, (value) => {
   locale.value = value ?? LANGUAGE.EN_US
+})
+
+watch(() => labelStore.text, (value) => {
+  if (appWindow.label !== WINDOW_LABEL.PREFERENCE) return
+
+  emit(LISTEN_KEY.LABEL_TEXT_CHANGED, value)
+})
+
+watch(() => labelStore.size, (value) => {
+  if (appWindow.label !== WINDOW_LABEL.PREFERENCE) return
+
+  emit(LISTEN_KEY.LABEL_SIZE_CHANGED, value)
 })
 
 useTauriListen(LISTEN_KEY.SHOW_WINDOW, ({ payload }) => {
@@ -62,6 +78,18 @@ useTauriListen(LISTEN_KEY.HIDE_WINDOW, ({ payload }) => {
   if (appWindow.label !== payload) return
 
   hideWindow()
+})
+
+useTauriListen<string>(LISTEN_KEY.LABEL_TEXT_CHANGED, ({ payload }) => {
+  if (appWindow.label !== WINDOW_LABEL.MAIN) return
+
+  labelStore.text = payload
+})
+
+useTauriListen<'small' | 'medium' | 'large' | 'xlarge'>(LISTEN_KEY.LABEL_SIZE_CHANGED, ({ payload }) => {
+  if (appWindow.label !== WINDOW_LABEL.MAIN) return
+
+  labelStore.size = payload
 })
 
 useEventListener('unhandledrejection', ({ reason }) => {

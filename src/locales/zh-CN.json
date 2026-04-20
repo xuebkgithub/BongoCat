@@ -140,6 +140,25 @@
           "feedbackIssues": "反馈问题",
           "viewLog": "查看日志"
         }
+      },
+      "hook": {
+        "title": "Hook",
+        "labels": {
+          "labelSettings": "标签设置",
+          "labelText": "标签文字",
+          "labelSize": "标签大小"
+        },
+        "hints": {
+          "labelText": "输入要展示在模型上方的标签文字，留空时将隐藏标签。",
+          "labelTextPlaceholder": "输入标签文字",
+          "labelSize": "调整标签展示的字号与预留高度。"
+        },
+        "options": {
+          "small": "小",
+          "medium": "中",
+          "large": "大",
+          "xlarge": "特大"
+        }
       }
     }
   },

@@ -10,7 +10,7 @@ import { exists, readDir } from '@tauri-apps/plugin-fs'
 import { useDebounceFn, useEventListener } from '@vueuse/core'
 import { round } from 'es-toolkit'
 import { nth } from 'es-toolkit/compat'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { useAppMenu } from '@/composables/useAppMenu'
 import { useDevice } from '@/composables/useDevice'
@@ -21,6 +21,7 @@ import { LISTEN_KEY } from '@/constants'
 import { hideWindow, setAlwaysOnTop, setTaskbarVisibility, showWindow } from '@/plugins/window'
 import { useCatStore } from '@/stores/cat'
 import { useGeneralStore } from '@/stores/general.ts'
+import { useLabelStore } from '@/stores/label'
 import { useModelStore } from '@/stores/model'
 import { isImage } from '@/utils/is'
 import live2d from '@/utils/live2d'
@@ -34,10 +35,23 @@ const { modelSize, handleLoad, handleDestroy, handleResize, handleKeyChange } = 
 const catStore = useCatStore()
 const { getBaseMenu, getExitMenu } = useAppMenu()
 const modelStore = useModelStore()
+const labelStore = useLabelStore()
 const generalStore = useGeneralStore()
 const resizing = ref(false)
 const backgroundImagePath = ref<string>()
 const { stickActive } = useGamepad()
+const labelMetrics = computed(() => labelStore.metrics)
+const labelReservedHeight = computed(() => labelMetrics.value.reservedHeight)
+const labelText = computed(() => labelStore.text.trim())
+const stageStyle = computed(() => ({
+  top: `${labelReservedHeight.value}px`,
+  height: `calc(100% - ${labelReservedHeight.value}px)`,
+}))
+const labelStyle = computed(() => ({
+  height: `${labelReservedHeight.value}px`,
+  fontSize: `${labelMetrics.value.fontSize}px`,
+  lineHeight: `${labelMetrics.value.lineHeight}px`,
+}))
 
 onMounted(startListening)
 
@@ -86,15 +100,16 @@ watch(() => modelStore.currentModel, async (model) => {
   modelStore.modelReady = true
 }, { deep: true, immediate: true })
 
-watch([() => catStore.window.scale, modelSize], async ([scale, modelSize]) => {
+watch([() => catStore.window.scale, modelSize, labelReservedHeight], async ([scale, modelSize]) => {
   if (!modelSize) return
 
   const { width, height } = modelSize
+  const reservedHeight = labelReservedHeight.value
 
   appWindow.setSize(
     new PhysicalSize({
       width: Math.round(width * (scale / 100)),
-      height: Math.round(height * (scale / 100)),
+      height: Math.round(height * (scale / 100) + reservedHeight),
     }),
   )
 }, { immediate: true })
@@ -179,8 +194,7 @@ function handleMouseMove(event: MouseEvent) {
 
 <template>
   <div
-    class="relative size-screen overflow-hidden children:(absolute size-full)"
-    :class="{ '-scale-x-100': catStore.model.mirror }"
+    class="relative size-screen overflow-hidden"
     :style="{
       opacity: catStore.window.opacity / 100,
       borderRadius: `${catStore.window.radius}%`,
@@ -189,24 +203,41 @@ function handleMouseMove(event: MouseEvent) {
     @mousedown="handleMouseDown"
     @mousemove="handleMouseMove"
   >
-    <img
-      v-if="backgroundImagePath"
-      class="object-cover"
-      :src="backgroundImagePath"
+    <div
+      v-if="labelMetrics.isVisible"
+      class="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-center px-4 text-center text-white font-bold drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
+      :style="labelStyle"
     >
+      <span class="max-w-full truncate">
+        {{ labelText }}
+      </span>
+    </div>
 
-    <canvas id="live2dCanvas" />
-
-    <img
-      v-for="path in modelStore.pressedKeys"
-      :key="path"
-      class="object-cover"
-      :src="convertFileSrc(path)"
+    <div
+      id="modelStage"
+      class="absolute inset-x-0 bottom-0 overflow-hidden children:(absolute size-full)"
+      :class="{ '-scale-x-100': catStore.model.mirror }"
+      :style="stageStyle"
     >
+      <img
+        v-if="backgroundImagePath"
+        class="object-cover"
+        :src="backgroundImagePath"
+      >
+
+      <canvas id="live2dCanvas" />
+
+      <img
+        v-for="path in modelStore.pressedKeys"
+        :key="path"
+        class="object-cover"
+        :src="convertFileSrc(path)"
+      >
+    </div>
 
     <div
       v-show="resizing || !modelStore.modelReady"
-      class="flex items-center justify-center bg-black"
+      class="absolute inset-0 z-30 flex items-center justify-center bg-black"
     >
       <span class="text-center text-[10vw] text-white">
         {{ resizing ? $t('pages.main.hints.redrawing') : $t('pages.main.hints.switching') }}

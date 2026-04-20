@@ -140,6 +140,25 @@
           "feedbackIssues": "Reportar Problema",
           "viewLog": "Ver Logs"
         }
+      },
+      "hook": {
+        "title": "Hook",
+        "labels": {
+          "labelSettings": "Configurações de Rótulo",
+          "labelText": "Texto do Rótulo",
+          "labelSize": "Tamanho do Rótulo"
+        },
+        "hints": {
+          "labelText": "Insira o texto do rótulo exibido acima do modelo. Deixe em branco para ocultar.",
+          "labelTextPlaceholder": "Insira o texto do rótulo",
+          "labelSize": "Ajuste o tamanho da fonte e o espaço reservado do rótulo."
+        },
+        "options": {
+          "small": "Pequeno",
+          "medium": "Médio",
+          "large": "Grande",
+          "xlarge": "Extra Grande"
+        }
       }
     }
   },

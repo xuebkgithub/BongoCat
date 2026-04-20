@@ -140,6 +140,25 @@
           "feedbackIssues": "Feedback Issues",
           "viewLog": "View Logs"
         }
+      },
+      "hook": {
+        "title": "Hook",
+        "labels": {
+          "labelSettings": "Label Settings",
+          "labelText": "Label Text",
+          "labelSize": "Label Size"
+        },
+        "hints": {
+          "labelText": "Enter the label text shown above the model. Leave empty to hide it.",
+          "labelTextPlaceholder": "Enter label text",
+          "labelSize": "Adjust the label font size and reserved top space."
+        },
+        "options": {
+          "small": "Small",
+          "medium": "Medium",
+          "large": "Large",
+          "xlarge": "Extra Large"
+        }
       }
     }
   },

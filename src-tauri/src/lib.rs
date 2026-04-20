@@ -4,6 +4,7 @@ mod utils;
 use core::{
     device::start_device_listening,
     gamepad::{start_gamepad_listing, stop_gamepad_listing},
+    label::set_label_text,
     prevent_default, setup,
 };
 use tauri::{Manager, WindowEvent, generate_handler};
@@ -31,7 +32,8 @@ pub fn run() {
             copy_dir,
             start_device_listening,
             start_gamepad_listing,
-            stop_gamepad_listing
+            stop_gamepad_listing,
+            set_label_text
         ])
         .plugin(tauri_plugin_custom_window::init())
         .plugin(tauri_plugin_os::init())

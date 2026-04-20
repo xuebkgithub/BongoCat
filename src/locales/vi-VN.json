@@ -140,6 +140,25 @@
           "feedbackIssues": "Báo lỗi",
           "viewLog": "Xem nhật ký"
         }
+      },
+      "hook": {
+        "title": "Hook",
+        "labels": {
+          "labelSettings": "Cài đặt nhãn",
+          "labelText": "Văn bản nhãn",
+          "labelSize": "Kích thước nhãn"
+        },
+        "hints": {
+          "labelText": "Nhập văn bản nhãn hiển thị phía trên mô hình. Để trống để ẩn nhãn.",
+          "labelTextPlaceholder": "Nhập văn bản nhãn",
+          "labelSize": "Điều chỉnh cỡ chữ và chiều cao dành riêng cho nhãn."
+        },
+        "options": {
+          "small": "Nhỏ",
+          "medium": "Trung bình",
+          "large": "Lớn",
+          "xlarge": "Rất lớn"
+        }
       }
     }
   },

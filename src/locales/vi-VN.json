@@ -153,6 +153,7 @@
           "interceptMode": "Chế độ chặn",
           "showSessionTitle": "Hiển thị tiêu đề phiên",
           "collapseLongText": "Tự động thu gọn văn bản dài",
+          "showDetailedContent": "Hiển thị nội dung chi tiết",
           "advancedConfig": "Cấu hình nâng cao",
           "hookTimeout": "Thời gian chờ Hook (s)",
           "idleSleep": "Ngủ khi rảnh (s)"
@@ -166,6 +167,7 @@
           "interceptMode": "Khi bật, tất cả các lệnh gọi công cụ bị chặn và yêu cầu phê duyệt thủ công.",
           "showSessionTitle": "Hiển thị tiêu đề phiên trước nội dung động để dễ phân biệt nhiều phiên Claude.",
           "collapseLongText": "Tự động rút gọn khi nội dung có nhiều dòng hoặc vượt quá 50 ký tự để tránh che mô hình.",
+          "showDetailedContent": "Khi bật, hiển thị văn bản thô từ Claude. Khi tắt, chỉ hiển thị nhãn trạng thái ngắn gọn.",
           "hookTimeout": "Số giây tối đa chờ phê duyệt của người dùng trước khi tự động cho phép.",
           "idleSleep": "Khoảng thời gian ngủ của luồng nền khi rảnh."
         },

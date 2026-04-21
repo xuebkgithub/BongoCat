@@ -153,6 +153,7 @@
           "interceptMode": "Modo de Interceptação",
           "showSessionTitle": "Mostrar título da sessão",
           "collapseLongText": "Recolher texto longo automaticamente",
+          "showDetailedContent": "Mostrar conteúdo detalhado",
           "advancedConfig": "Configuração Avançada",
           "hookTimeout": "Timeout do Hook (s)",
           "idleSleep": "Sono Ocioso (s)"
@@ -166,6 +167,7 @@
           "interceptMode": "Quando ativado, todas as chamadas de ferramentas são interceptadas e requerem aprovação manual.",
           "showSessionTitle": "Mostra o título da sessão antes do texto dinâmico para diferenciar melhor várias sessões do Claude.",
           "collapseLongText": "Encurta automaticamente o conteúdo quando houver várias linhas ou mais de 50 caracteres para evitar cobrir o modelo.",
+          "showDetailedContent": "Quando ativado, exibe o texto bruto do Claude. Quando desativado, exibe apenas rótulos de status breves.",
           "hookTimeout": "Segundos máximos para aguardar aprovação do usuário antes de permitir automaticamente.",
           "idleSleep": "Intervalo de sono da thread em segundo plano quando ociosa."
         },

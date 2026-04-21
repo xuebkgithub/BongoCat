@@ -111,13 +111,13 @@ function buildRuntimeLabel(payload: ClaudeEventPayload): RuntimeLabelPayload {
   const text = payload.state === 'waiting'
     ? signalText
     : payload.state === 'coding'
-      ? payload.rawText || toolText
+      ? (labelStore.showDetailedContent ? payload.rawText : null) || toolText
       : payload.state === 'error'
-        ? payload.rawText || t('pages.preference.hook.runtime.error')
+        ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.error')
         : payload.state === 'success'
-          ? payload.rawText || t('pages.preference.hook.runtime.success')
+          ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.success')
           : payload.state === 'thinking'
-            ? payload.rawText || t('pages.preference.hook.runtime.thinking')
+            ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.thinking')
             : ''
 
   return {

@@ -122,6 +122,7 @@ export const useLabelStore = defineStore('label', () => {
   const size = ref<LabelSize>('medium')
   const showSessionTitle = ref(true)
   const collapseLongText = ref(true)
+  const showDetailedContent = ref(true)
   const catStore = useCatStore()
 
   const isRuntimeActive = computed(() => runtimeText.value.trim().length > 0)
@@ -209,6 +210,7 @@ export const useLabelStore = defineStore('label', () => {
     size,
     showSessionTitle,
     collapseLongText,
+    showDetailedContent,
     hasText,
     metrics,
     shouldCollapse,

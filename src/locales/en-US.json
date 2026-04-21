@@ -153,6 +153,7 @@
           "interceptMode": "Intercept Mode",
           "showSessionTitle": "Show Session Title",
           "collapseLongText": "Auto-collapse Long Text",
+          "showDetailedContent": "Show Detailed Content",
           "advancedConfig": "Advanced Config",
           "hookTimeout": "Hook Timeout (s)",
           "idleSleep": "Idle Sleep (s)"
@@ -166,6 +167,7 @@
           "interceptMode": "When enabled, all tool calls are intercepted and require manual approval; when disabled, only notifications are sent.",
           "showSessionTitle": "Show the current session title before dynamic text so multiple Claude sessions are easier to tell apart.",
           "collapseLongText": "Automatically shorten content when it spans multiple lines or exceeds 50 characters to avoid covering the model.",
+          "showDetailedContent": "When enabled, shows the raw text from Claude. When disabled, only shows brief status labels.",
           "hookTimeout": "Maximum seconds to wait for user approval before auto-allowing.",
           "idleSleep": "Background thread sleep interval when idle."
         },

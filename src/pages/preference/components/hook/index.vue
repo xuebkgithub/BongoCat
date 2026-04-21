@@ -96,6 +96,13 @@ async function saveConfig() {
     >
       <Switch v-model:checked="labelStore.collapseLongText" />
     </ProListItem>
+
+    <ProListItem
+      :description="$t('pages.preference.hook.hints.showDetailedContent')"
+      :title="$t('pages.preference.hook.labels.showDetailedContent')"
+    >
+      <Switch v-model:checked="labelStore.showDetailedContent" />
+    </ProListItem>
   </ProList>
 
   <ProList :title="$t('pages.preference.hook.labels.claudeCodeSettings')">

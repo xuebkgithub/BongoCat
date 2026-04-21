@@ -42,7 +42,9 @@ const backgroundImagePath = ref<string>()
 const { stickActive } = useGamepad()
 const labelMetrics = computed(() => labelStore.metrics)
 const labelReservedHeight = computed(() => labelMetrics.value.reservedHeight)
-const labelText = computed(() => labelStore.text.trim())
+const labelTitle = computed(() => labelStore.displayTitle.trim())
+const labelBody = computed(() => labelStore.displayBodyTag.trim())
+const labelTooltip = computed(() => labelStore.tooltipText.trim())
 const stageStyle = computed(() => ({
   top: `${labelReservedHeight.value}px`,
   height: `calc(100% - ${labelReservedHeight.value}px)`,
@@ -208,8 +210,14 @@ function handleMouseMove(event: MouseEvent) {
       class="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-center px-4 text-center text-white font-bold drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
       :style="labelStyle"
     >
-      <span class="max-w-full truncate">
-        {{ labelText }}
+      <span
+        class="line-clamp-2 w-full break-all text-center leading-tight"
+        :title="labelTooltip"
+      >
+        <span
+          v-if="labelTitle"
+          class="mr-0.5 opacity-80"
+        >{{ labelTitle }}</span><span>{{ labelBody }}</span>
       </span>
     </div>
 

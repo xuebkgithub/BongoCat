@@ -12,6 +12,7 @@ export const LISTEN_KEY = {
   SET_EXPRESSION: 'set-expression',
   LABEL_TEXT_CHANGED: 'label-text-changed',
   LABEL_SIZE_CHANGED: 'label-size-changed',
+  CLAUDE_EVENT: 'claude-event',
 }
 
 export const INVOKE_KEY = {

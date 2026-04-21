@@ -25,3 +25,4 @@ target
 /CLAUDE.md
 /.claude/
 /.vscode/
+/package-lock.json

@@ -28,7 +28,7 @@ import { useModelStore } from './stores/model'
 import { useShortcutStore } from './stores/shortcut.ts'
 
 interface ClaudeEventPayload {
-  state: 'idle' | 'thinking' | 'coding' | 'success' | 'error' | 'waiting'
+  state: 'idle' | 'thinking' | 'coding' | 'success' | 'error' | 'waiting' | 'dormant'
   source: 'claude' | 'signal'
   sessionId?: string | null
   projectName?: string | null
@@ -110,15 +110,17 @@ function buildRuntimeLabel(payload: ClaudeEventPayload): RuntimeLabelPayload {
 
   const text = payload.state === 'waiting'
     ? signalText
-    : payload.state === 'coding'
-      ? (labelStore.showDetailedContent ? payload.rawText : null) || toolText
-      : payload.state === 'error'
-        ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.error')
-        : payload.state === 'success'
-          ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.success')
-          : payload.state === 'thinking'
-            ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.thinking')
-            : ''
+    : payload.state === 'dormant'
+      ? t('pages.preference.hook.runtime.dormant')
+      : payload.state === 'coding'
+        ? (labelStore.showDetailedContent ? payload.rawText : null) || toolText
+        : payload.state === 'error'
+          ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.error')
+          : payload.state === 'success'
+            ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.success')
+            : payload.state === 'thinking'
+              ? (labelStore.showDetailedContent ? payload.rawText : null) || t('pages.preference.hook.runtime.thinking')
+              : ''
 
   return {
     text,

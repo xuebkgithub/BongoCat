@@ -208,6 +208,7 @@ function handleMouseMove(event: MouseEvent) {
     <div
       v-if="labelMetrics.isVisible"
       class="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-center px-4 text-center text-white font-bold drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
+      :class="{ 'opacity-50': labelStore.runtimeState === 'dormant' }"
       :style="labelStyle"
     >
       <span

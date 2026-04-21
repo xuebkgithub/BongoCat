@@ -8,7 +8,7 @@ export const LABEL_COLLAPSE_LIMIT = 50
 export const SESSION_TITLE_MAX_CHARS = 16
 
 export type LabelSize = typeof LABEL_SIZES[number]
-export type RuntimeLabelState = 'idle' | 'thinking' | 'coding' | 'success' | 'error' | 'waiting'
+export type RuntimeLabelState = 'idle' | 'thinking' | 'coding' | 'success' | 'error' | 'waiting' | 'dormant'
 export type RuntimeLabelSource = 'claude' | 'signal' | 'static'
 
 export interface LabelSizeMetrics {

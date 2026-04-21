@@ -156,7 +156,8 @@
           "showDetailedContent": "Hiển thị nội dung chi tiết",
           "advancedConfig": "Cấu hình nâng cao",
           "hookTimeout": "Thời gian chờ Hook (s)",
-          "idleSleep": "Ngủ khi rảnh (s)"
+          "idleSleep": "Ngủ khi rảnh (s)",
+          "activeStateTimeout": "Thời gian chờ trạng thái"
         },
         "hints": {
           "labelText": "Nhập văn bản mặc định hiển thị phía trên mô hình khi Claude đang rảnh. Trong lúc hoạt động, văn bản động của Claude sẽ được ưu tiên. Để trống để ẩn nhãn.",
@@ -169,7 +170,8 @@
           "collapseLongText": "Tự động rút gọn khi nội dung có nhiều dòng hoặc vượt quá 50 ký tự để tránh che mô hình.",
           "showDetailedContent": "Khi bật, hiển thị văn bản thô từ Claude. Khi tắt, chỉ hiển thị nhãn trạng thái ngắn gọn.",
           "hookTimeout": "Số giây tối đa chờ phê duyệt của người dùng trước khi tự động cho phép.",
-          "idleSleep": "Khoảng thời gian ngủ của luồng nền khi rảnh."
+          "idleSleep": "Khoảng thời gian ngủ của luồng nền khi rảnh.",
+          "activeStateTimeout": "Tự động đặt lại về rảnh khi Claude Code dừng bất ngờ (giây)"
         },
         "runtime": {
           "thinking": "Đang suy nghĩ",
@@ -178,7 +180,8 @@
           "waiting": "Đang chờ phê duyệt",
           "sessionFallback": "Phiên {id}",
           "success": "Đã hoàn tất",
-          "error": "Đã xảy ra lỗi"
+          "error": "Đã xảy ra lỗi",
+          "dormant": "Ngủ đông"
         },
         "options": {
           "small": "Nhỏ",

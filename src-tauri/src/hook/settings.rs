@@ -449,6 +449,8 @@ pub fn start_signal_watching(
                 if !event.path.exists() {
                     continue;
                 }
+                crate::hook::claude::update_last_event();
+                crate::hook::claude::set_active(true);
                 let _ = app.emit("claude-event", crate::hook::claude::waiting_event());
             }
         }

@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::io::{Read, Seek, SeekFrom};
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
 use notify::RecursiveMode;
@@ -26,6 +27,7 @@ pub enum ClaudeEventState {
     Success,
     Error,
     Waiting,
+    Dormant,
 }
 
 impl ClaudeEventState {
@@ -37,6 +39,7 @@ impl ClaudeEventState {
             ClaudeEventState::Success => "success",
             ClaudeEventState::Error => "error",
             ClaudeEventState::Waiting => "waiting",
+            ClaudeEventState::Dormant => "dormant",
         }
     }
 }
@@ -350,6 +353,30 @@ fn resolve_event(entry: &JsonlEntry, project_name: Option<String>) -> Option<Cla
     }
 }
 
+// ---- 超时检测状态 ----
+
+static LAST_EVENT_MILLIS: AtomicU64 = AtomicU64::new(0);
+static IS_ACTIVE: AtomicBool = AtomicBool::new(false);
+
+fn now_millis() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_millis() as u64
+}
+
+pub fn update_last_event() {
+    LAST_EVENT_MILLIS.store(now_millis(), Ordering::Relaxed);
+}
+
+pub fn set_active(active: bool) {
+    IS_ACTIVE.store(active, Ordering::Relaxed);
+}
+
+fn is_active_state(state: &str) -> bool {
+    !matches!(state, "idle" | "dormant")
+}
+
 pub fn waiting_event() -> ClaudeEvent {
     ClaudeEvent {
         state: ClaudeEventState::Waiting.as_str().to_string(),
@@ -378,7 +405,7 @@ pub fn start_watching(
 
     let parser = Arc::new(Mutex::new(IncrementalParser::new()));
     let (tx, rx) = std::sync::mpsc::channel::<DebounceEventResult>();
-    let app = app_handle;
+    let app = app_handle.clone();
 
     std::thread::spawn(move || {
         while let Ok(result) = rx.recv() {
@@ -406,8 +433,62 @@ pub fn start_watching(
                     let Some(event) = resolve_event(&entry, project_name.clone()) else {
                         continue;
                     };
+                    update_last_event();
+                    set_active(is_active_state(&event.state));
                     let _ = app.emit("claude-event", &event);
                 }
+            }
+        }
+    });
+
+    // 超时检测线程：活跃状态超时回 idle，idle 超时进 dormant
+    let timeout_app = app_handle;
+    let timeout_config = config;
+    std::thread::spawn(move || {
+        let check_interval = std::time::Duration::from_secs(1);
+        loop {
+            std::thread::sleep(check_interval);
+
+            let (active_timeout_secs, idle_timeout_secs) = timeout_config
+                .read()
+                .map(|c| (c.active_state_timeout_secs, c.idle_sleep_secs))
+                .unwrap_or((30, 300));
+
+            let now = now_millis();
+            let last = LAST_EVENT_MILLIS.load(Ordering::Relaxed);
+            let active = IS_ACTIVE.load(Ordering::Relaxed);
+
+            if last == 0 {
+                continue;
+            }
+
+            let elapsed_secs = (now.saturating_sub(last)) / 1000;
+
+            if active && elapsed_secs >= active_timeout_secs {
+                IS_ACTIVE.store(false, Ordering::Relaxed);
+                let event = ClaudeEvent {
+                    state: ClaudeEventState::Idle.as_str().to_string(),
+                    source: ClaudeEventSource::Signal,
+                    session_id: None,
+                    project_name: None,
+                    detail: None,
+                    raw_text: None,
+                    tool_name: None,
+                };
+                let _ = timeout_app.emit("claude-event", &event);
+                update_last_event();
+            } else if !active && elapsed_secs >= idle_timeout_secs {
+                let event = ClaudeEvent {
+                    state: ClaudeEventState::Dormant.as_str().to_string(),
+                    source: ClaudeEventSource::Signal,
+                    session_id: None,
+                    project_name: None,
+                    detail: None,
+                    raw_text: None,
+                    tool_name: None,
+                };
+                let _ = timeout_app.emit("claude-event", &event);
+                update_last_event();
             }
         }
     });

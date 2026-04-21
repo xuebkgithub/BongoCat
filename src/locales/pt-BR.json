@@ -156,7 +156,8 @@
           "showDetailedContent": "Mostrar conteúdo detalhado",
           "advancedConfig": "Configuração Avançada",
           "hookTimeout": "Timeout do Hook (s)",
-          "idleSleep": "Sono Ocioso (s)"
+          "idleSleep": "Sono Ocioso (s)",
+          "activeStateTimeout": "Tempo limite ativo"
         },
         "hints": {
           "labelText": "Digite o texto padrão exibido acima do modelo quando o Claude estiver ocioso. Durante a atividade, o texto dinâmico do Claude tem prioridade. Deixe em branco para ocultar.",
@@ -169,7 +170,8 @@
           "collapseLongText": "Encurta automaticamente o conteúdo quando houver várias linhas ou mais de 50 caracteres para evitar cobrir o modelo.",
           "showDetailedContent": "Quando ativado, exibe o texto bruto do Claude. Quando desativado, exibe apenas rótulos de status breves.",
           "hookTimeout": "Segundos máximos para aguardar aprovação do usuário antes de permitir automaticamente.",
-          "idleSleep": "Intervalo de sono da thread em segundo plano quando ociosa."
+          "idleSleep": "Intervalo de sono da thread em segundo plano quando ociosa.",
+          "activeStateTimeout": "Redefinir para inativo quando Claude Code para inesperadamente (segundos)"
         },
         "runtime": {
           "thinking": "Pensando",
@@ -178,7 +180,8 @@
           "waiting": "Aguardando aprovação",
           "sessionFallback": "Sessão {id}",
           "success": "Concluído",
-          "error": "Algo deu errado"
+          "error": "Algo deu errado",
+          "dormant": "Inativo"
         },
         "options": {
           "small": "Pequeno",

@@ -165,5 +165,17 @@ async function saveConfig() {
         @blur="saveConfig"
       />
     </ProListItem>
+
+    <ProListItem
+      :description="$t('pages.preference.hook.hints.activeStateTimeout')"
+      :title="$t('pages.preference.hook.labels.activeStateTimeout')"
+    >
+      <InputNumber
+        v-model:value="localConfig.active_state_timeout_secs"
+        :max="120"
+        :min="5"
+        @blur="saveConfig"
+      />
+    </ProListItem>
   </ProList>
 </template>

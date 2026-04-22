@@ -34,24 +34,24 @@ export interface RuntimeLabelPayload {
 
 export const LABEL_SIZE_MAP: Record<LabelSize, LabelSizeMetrics> = {
   small: {
-    fontSize: 13,
-    lineHeight: 18,
-    reservedHeight: 44,
-  },
-  medium: {
     fontSize: 16,
     lineHeight: 22,
     reservedHeight: 52,
   },
-  large: {
+  medium: {
     fontSize: 22,
     lineHeight: 30,
     reservedHeight: 68,
   },
-  xlarge: {
+  large: {
     fontSize: 28,
     lineHeight: 36,
     reservedHeight: 80,
+  },
+  xlarge: {
+    fontSize: 34,
+    lineHeight: 42,
+    reservedHeight: 92,
   },
 }
 

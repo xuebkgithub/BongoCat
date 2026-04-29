@@ -50,6 +50,7 @@
           "launchOnStartup": "开机自启动",
           "showTaskbarIcon": "显示任务栏图标",
           "showTrayIcon": "显示托盘图标",
+          "multiScreenFollow": "跟随当前屏幕",
           "appearanceSettings": "外观设置",
           "themeMode": "主题模式",
           "language": "语言",
@@ -66,6 +67,7 @@
         "hints": {
           "showTaskbarIcon": "启用后，即可通过 OBS Studio 捕获窗口。",
           "showTrayIcon": "启用后，在系统托盘中显示应用图标。",
+          "multiScreenFollow": "启用后，BongoCat 会自动移动到鼠标所在的显示器。",
           "inputMonitoringPermission": "开启输入监控权限，以便接收系统的键盘和鼠标事件来响应你的操作。",
           "inputMonitoringPermissionGuide": "如果权限已开启，请先选中并点击“-”按钮将其删除，然后重新手动添加，最后重启应用以确保权限生效。"
         },
